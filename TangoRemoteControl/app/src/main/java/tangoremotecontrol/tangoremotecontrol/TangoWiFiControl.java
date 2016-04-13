@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketAddress;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -28,9 +29,10 @@ public class TangoWiFiControl extends AppCompatActivity {
     byte[] right = new byte[]{'r'};
     byte[] stop = new byte[]{'s'};
     byte[] reverse = new byte[]{'b'};
+    byte[] connecttoSerial = new byte[] {'c'};
 
     String ip = "0.0.0.0";
-    int port = 0000;
+    int port = 5010;
 
     Socket toTango;
     OutputStream outputStream;
@@ -78,11 +80,11 @@ public class TangoWiFiControl extends AppCompatActivity {
     private final View.OnTouchListener forwardListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            /*try {
+            try {
                 outputStream.write(forward);
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
+            }
 
             System.out.println("forward");
             return false;
@@ -91,11 +93,11 @@ public class TangoWiFiControl extends AppCompatActivity {
     private final View.OnTouchListener leftListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            /*try {
+            try {
                 outputStream.write(left);
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
+            }
 
             System.out.println("left");
             return false;
@@ -104,11 +106,11 @@ public class TangoWiFiControl extends AppCompatActivity {
     private final View.OnTouchListener rightListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            /*try {
+            try {
                 outputStream.write(right);
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
+            }
 
             System.out.println("right");
             return false;
@@ -117,11 +119,11 @@ public class TangoWiFiControl extends AppCompatActivity {
     private final View.OnTouchListener stopListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            /*try {
+            try {
                 outputStream.write(stop);
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
+            }
 
             System.out.println("stop");
             return false;
@@ -130,11 +132,11 @@ public class TangoWiFiControl extends AppCompatActivity {
     private final View.OnTouchListener reverseListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            /*try {
+            try {
                 outputStream.write(reverse);
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
+            }
 
             System.out.println("reverse");
             return false;
@@ -144,11 +146,19 @@ public class TangoWiFiControl extends AppCompatActivity {
     private final View.OnTouchListener connectListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            /*try {
+            try {
                 outputStream.write(reverse);
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
+            }
+
+            try {
+                toTango = new Socket(ip, port);
+                outputStream = toTango.getOutputStream();
+            } catch (IOException e) {
+                //e.printStackTrace();
+                System.out.println("Connection Failed.");
+            }
 
             if(toTango != null) {
                 TextView text = (TextView) findViewById(R.id.connectedText);
@@ -158,6 +168,18 @@ public class TangoWiFiControl extends AppCompatActivity {
             }
             return false;
         }
+    };
+
+    private final View.OnTouchListener connectSerialListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            try {
+                outputStream.write(connecttoSerial);
+            } catch (IOException e) {
+                System.out.println("Connection to robot failed.");
+            }
+            return false;
+       }
     };
 
     //---------------------------------------------------------------------------------------------
@@ -182,12 +204,7 @@ public class TangoWiFiControl extends AppCompatActivity {
         });
 
 //--------------------------------------------------------------------------------------------------
-        try {
-            toTango = new Socket(ip, port);
-            outputStream = toTango.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
         findViewById(R.id.forwardButton).setOnTouchListener(forwardListener);
         findViewById(R.id.leftButton).setOnTouchListener(leftListener);
@@ -195,6 +212,7 @@ public class TangoWiFiControl extends AppCompatActivity {
         findViewById(R.id.stopButton).setOnTouchListener(stopListener);
         findViewById(R.id.reverseButton).setOnTouchListener(reverseListener);
         findViewById(R.id.connectButton).setOnTouchListener(connectListener);
+        findViewById(R.id.conToSerial).setOnTouchListener(connectSerialListener);
 
     }
 //--------------------------------------------------------------------------------------------------

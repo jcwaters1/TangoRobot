@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Con. To Serial"
-            android:id="@+id/button"
+            android:id="@+id/conToSerial"
             android:layout_gravity="right|bottom" />
 
         <Button
