@@ -146,11 +146,11 @@ public class TangoWiFiControl extends AppCompatActivity {
     private final View.OnTouchListener connectListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            try {
-                outputStream.write(reverse);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                outputStream.write(reverse);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
 
             try {
                 toTango = new Socket(ip, port);
