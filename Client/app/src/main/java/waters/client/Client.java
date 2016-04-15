@@ -69,7 +69,6 @@ public class Client extends Activity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    out.println(f);
                     out.println("f");
                 }};
 
@@ -86,7 +85,6 @@ public class Client extends Activity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    out.println(l);
                     out.println("l");
                 }};
 
@@ -103,7 +101,6 @@ public class Client extends Activity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    out.println(r);
                     out.println("r");
                 }};
 
@@ -120,7 +117,6 @@ public class Client extends Activity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    out.println(s);
                     out.println("s");
                 }};
 
@@ -137,7 +133,6 @@ public class Client extends Activity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    out.println(c);
                     out.println("c");
                 }};
 
@@ -154,7 +149,6 @@ public class Client extends Activity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    out.println(b);
                     out.println("b");
                 }};
 
