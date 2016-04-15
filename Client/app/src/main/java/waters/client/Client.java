@@ -21,12 +21,7 @@ public class Client extends Activity {
     private static final int SERVERPORT = 5010;
     private static final String SERVER_IP = "192.168.43.1";
 
-    byte[] f = new byte[]{'f'};
-    byte[] l = new byte[]{'l'};
-    byte[] r = new byte[]{'r'};
-    byte[] b = new byte[]{'b'};
-    byte[] s = new byte[]{'s'};
-    byte[] c = new byte[]{'c'};
+    EditText landmarkName;
 
 
 
@@ -53,8 +48,47 @@ public class Client extends Activity {
         Button connectButton = (Button) findViewById(R.id.connectButton);
         connectButton.setOnClickListener(connectListener);
 
+        Button recordADFButton = (Button) findViewById(R.id.recordADFButton);
+        recordADFButton.setOnClickListener(recordADFButtonListener);
+
+        Button saveLandmarkButton = (Button) findViewById(R.id.saveLandmarkButton);
+        saveLandmarkButton.setOnClickListener(saveLandmarkButtonListener);
+
+        landmarkName = (EditText)findViewById(R.id.landmarkText);
+
         new Thread(new ClientThread()).start();
     }
+
+    View.OnClickListener saveLandmarkButtonListener =
+            new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    String name = landmarkName.getText().toString();
+                    PrintWriter out = null;
+                    try {
+                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    out.println("save " + name);
+                }};
+
+    View.OnClickListener recordADFButtonListener =
+            new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    PrintWriter out = null;
+                    try {
+                        out = new PrintWriter(new BufferedWriter(
+                                new OutputStreamWriter(socket.getOutputStream())),
+                                true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    out.println("recordADF");
+                }};
 
     View.OnClickListener forwardListener =
             new View.OnClickListener(){

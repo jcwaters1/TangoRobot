@@ -46,8 +46,7 @@
         android:layout_height="wrap_content"
         android:text="Left"
         android:id="@+id/leftButton"
-        android:layout_alignTop="@+id/stopButton"
-        android:layout_alignEnd="@+id/myButton" />
+        android:layout_alignTop="@+id/stopButton" />
 
     <Button
         android:layout_width="wrap_content"
@@ -57,5 +56,31 @@
         android:layout_alignTop="@+id/stopButton"
         android:layout_toEndOf="@+id/stopButton"
         android:layout_marginStart="38dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Record ADF"
+        android:id="@+id/recordADFButton"
+        android:layout_above="@+id/connectButton"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/connectButton" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/landmarkText"
+        android:layout_above="@+id/saveLandmarkButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignEnd="@+id/recordADFButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Landmark"
+        android:id="@+id/saveLandmarkButton"
+        android:layout_above="@+id/recordADFButton"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/connectButton" />
 
 </RelativeLayout>
