@@ -54,10 +54,46 @@ public class Client extends Activity {
         Button saveLandmarkButton = (Button) findViewById(R.id.saveLandmarkButton);
         saveLandmarkButton.setOnClickListener(saveLandmarkButtonListener);
 
+        Button goToL1Button = (Button) findViewById(R.id.goToL1Button);
+        goToL1Button.setOnClickListener(goToL1ButtonListener);
+
+        Button goToL2Button = (Button) findViewById(R.id.goToL2Button);
+        goToL2Button.setOnClickListener(goToL2ButtonListener);
+
         landmarkName = (EditText)findViewById(R.id.landmarkText);
 
         new Thread(new ClientThread()).start();
     }
+
+    View.OnClickListener goToL1ButtonListener =
+            new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    String name = landmarkName.getText().toString();
+                    PrintWriter out = null;
+                    try {
+                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    out.println("goto1");
+                }};
+
+    View.OnClickListener goToL2ButtonListener =
+            new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    String name = landmarkName.getText().toString();
+                    PrintWriter out = null;
+                    try {
+                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    out.println("goto2");
+                }};
 
     View.OnClickListener saveLandmarkButtonListener =
             new View.OnClickListener(){
