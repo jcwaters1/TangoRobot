@@ -9,6 +9,8 @@ package waters.client;
         import java.net.UnknownHostException;
 
         import android.app.Activity;
+        import android.content.Context;
+        import android.net.ConnectivityManager;
         import android.os.Bundle;
         import android.view.View;
         import android.widget.Button;
@@ -37,6 +39,8 @@ public class Client extends Activity {
     private static final String SERVER_IP = "192.168.43.1";
 
     EditText landmarkName;
+    EditText adfName;
+
 
 
 
@@ -75,14 +79,11 @@ public class Client extends Activity {
         Button goToL2Button = (Button) findViewById(R.id.goToL2Button);
         goToL2Button.setOnClickListener(goToL2ButtonListener);
 
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-
-        //txtSpeechInput = (TextView) findViewById(R.id.txtSpeechInput);
         Button btnSpeak = (Button) findViewById(R.id.btnSpeak);
         btnSpeak.setOnClickListener(btnSpeakListener);
 
         landmarkName = (EditText)findViewById(R.id.landmarkText);
+        adfName = (EditText)findViewById(R.id.adfName);
 
         new Thread(new ClientThread()).start();
     }
@@ -92,7 +93,24 @@ public class Client extends Activity {
 
                 @Override
                 public void onClick(View v) {
+                    ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+                    cm.setNetworkPreference(ConnectivityManager.TYPE_MOBILE);
                     promptSpeechInput();
+                    cm.setNetworkPreference(ConnectivityManager.DEFAULT_NETWORK_PREFERENCE);
+                }};
+
+    View.OnClickListener saveADF =
+            new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    String adf = adfName.getText().toString();
+                    PrintWriter out = null;
+                    try {
+                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    out.println("adfSave " + adf);
                 }};
 
     View.OnClickListener goToL1ButtonListener =
