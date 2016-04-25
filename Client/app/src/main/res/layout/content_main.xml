@@ -99,4 +99,12 @@
         android:layout_above="@+id/goToL2Button"
         android:layout_alignParentEnd="true" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Voic Command"
+        android:id="@+id/btnSpeak"
+        android:layout_above="@+id/goToL1Button"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

@@ -14,9 +14,24 @@ package waters.client;
         import android.widget.Button;
         import android.widget.EditText;
 
+        import java.util.ArrayList;
+        import java.util.Locale;
+
+        import android.app.Activity;
+        import android.content.ActivityNotFoundException;
+        import android.content.Intent;
+        import android.os.Bundle;
+        import android.speech.RecognizerIntent;
+        import android.view.View;
+        import android.widget.Button;
+        import android.widget.TextView;
+
 public class Client extends Activity {
 
     private Socket socket;
+    private TextView txtSpeechInput;
+//    private
+    private final int REQ_CODE_SPEECH_INPUT = 100;
 
     private static final int SERVERPORT = 5010;
     private static final String SERVER_IP = "192.168.43.1";
@@ -60,10 +75,25 @@ public class Client extends Activity {
         Button goToL2Button = (Button) findViewById(R.id.goToL2Button);
         goToL2Button.setOnClickListener(goToL2ButtonListener);
 
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+
+        //txtSpeechInput = (TextView) findViewById(R.id.txtSpeechInput);
+        Button btnSpeak = (Button) findViewById(R.id.btnSpeak);
+        btnSpeak.setOnClickListener(btnSpeakListener);
+
         landmarkName = (EditText)findViewById(R.id.landmarkText);
 
         new Thread(new ClientThread()).start();
     }
+
+    View.OnClickListener btnSpeakListener =
+            new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    promptSpeechInput();
+                }};
 
     View.OnClickListener goToL1ButtonListener =
             new View.OnClickListener(){
@@ -238,6 +268,57 @@ public class Client extends Activity {
 //            e.printStackTrace();
 //        }
 //    }
+
+    /**
+     * Showing google speech input dialog
+     * */
+    private void promptSpeechInput() {
+        System.out.println("here");
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+            System.out.println("error");
+        }
+    }
+
+    /**
+     * Receiving speech input
+     * */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    //txtSpeechInput.setText(result.get(0));
+
+                    //use the result.get(0) to control robot here...
+
+                    PrintWriter out = null;
+                    try {
+                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    if(result.get(0).equals("go to Lanmark 1")){
+                        out.println("goto1");
+                    }else if(result.get(0).equals("go to Lanmark 2")){
+                        out.println("goto2");
+                    }
+
+                }
+                break;
+            }
+
+        }
+    }
 
     class ClientThread implements Runnable {
 
