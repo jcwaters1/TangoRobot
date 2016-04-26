@@ -11,6 +11,7 @@ package waters.client;
         import android.app.Activity;
         import android.content.Context;
         import android.net.ConnectivityManager;
+        import android.net.wifi.WifiManager;
         import android.os.Bundle;
         import android.view.View;
         import android.widget.Button;
@@ -28,12 +29,16 @@ package waters.client;
         import android.widget.Button;
         import android.widget.TextView;
 
+        import static java.lang.Thread.sleep;
+
 public class Client extends Activity {
 
     private Socket socket;
     private TextView txtSpeechInput;
 //    private
     private final int REQ_CODE_SPEECH_INPUT = 100;
+    private WifiManager wifiManager;
+    public static String voice = "";
 
     private static final int SERVERPORT = 5010;
     private static final String SERVER_IP = "192.168.43.1";
@@ -82,6 +87,9 @@ public class Client extends Activity {
         Button btnSpeak = (Button) findViewById(R.id.btnSpeak);
         btnSpeak.setOnClickListener(btnSpeakListener);
 
+        Button saveADF = (Button) findViewById(R.id.saveADF);
+        saveADF.setOnClickListener(saveADFListener);
+
         landmarkName = (EditText)findViewById(R.id.landmarkText);
         adfName = (EditText)findViewById(R.id.adfName);
 
@@ -93,13 +101,77 @@ public class Client extends Activity {
 
                 @Override
                 public void onClick(View v) {
-                    ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-                    cm.setNetworkPreference(ConnectivityManager.TYPE_MOBILE);
+                    wifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+                    //System.out.println("here");
+
+                    wifiManager.setWifiEnabled(false);
+                    try {
+                        sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                     promptSpeechInput();
-                    cm.setNetworkPreference(ConnectivityManager.DEFAULT_NETWORK_PREFERENCE);
+
+                    try {
+                        //InetAddress serverAddr = InetAddress.getByName(SERVER_IP);
+                        //socket = new Socket(serverAddr, SERVERPORT);
+                        PrintWriter out = null;
+                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                        out.println("c");
+                    } catch (IOException e) {
+                        System.out.println("error2");
+                    }
+
+                    System.out.println("voice: "+ voice);
+
+                    if(voice.equals("go to Landmark one")){
+                        PrintWriter out = null;
+                        try {
+                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("L1 1");
+                        System.out.println("out: " + out);
+                        out.println("goto1");
+                    }else if(voice.equals("go to Landmark 1")){
+                        PrintWriter out = null;
+                        try {
+                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("L1 2");
+                        System.out.println("out: " + out);
+                        out.println("goto1");
+                    }else if(voice.equals("go to Landmark two")){
+                        PrintWriter out = null;
+                        try {
+                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("out: " + out);
+                        out.println("goto2");
+                        System.out.println("L2 1");
+                    }else if(voice.equals("go to Landmark 2")){
+                        PrintWriter out = null;
+                        try {
+                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("L2 2");
+                        out.println("goto2");
+                        System.out.println("out: " + out);
+                    }else{
+                        System.out.println("Error3");
+                    }
+
                 }};
 
-    View.OnClickListener saveADF =
+    View.OnClickListener saveADFListener=
             new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
@@ -287,11 +359,15 @@ public class Client extends Activity {
 //        }
 //    }
 
+//    public void setVoice(String voice){
+//        this.voice = voice;
+//    }
+
     /**
      * Showing google speech input dialog
      * */
     private void promptSpeechInput() {
-        System.out.println("here");
+        //System.out.println("here");
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
@@ -310,6 +386,7 @@ public class Client extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
         switch (requestCode) {
             case REQ_CODE_SPEECH_INPUT: {
                 if (resultCode == RESULT_OK && null != data) {
@@ -318,18 +395,19 @@ public class Client extends Activity {
 
                     //use the result.get(0) to control robot here...
 
-                    PrintWriter out = null;
+//                    voice = result.get(0);
+                    Client.voice = result.get(0);
+
+                    wifiManager.setWifiEnabled(true);
+
                     try {
-                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        sleep(10000);
+                    } catch (InterruptedException e) {
+                        System.out.println("error1");
                     }
 
-                    if(result.get(0).equals("go to Lanmark 1")){
-                        out.println("goto1");
-                    }else if(result.get(0).equals("go to Lanmark 2")){
-                        out.println("goto2");
-                    }
+                    new Thread (new ClientThread()).start();
+
 
                 }
                 break;
