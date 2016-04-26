@@ -43,6 +43,8 @@ public class Client extends Activity {
     private static final int SERVERPORT = 5010;
     private static final String SERVER_IP = "192.168.43.1";
 
+    boolean gotResult = false;
+
     EditText landmarkName;
     EditText adfName;
 
@@ -101,6 +103,8 @@ public class Client extends Activity {
 
                 @Override
                 public void onClick(View v) {
+                    PrintWriter out = null;
+
                     wifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
                     //System.out.println("here");
 
@@ -113,58 +117,60 @@ public class Client extends Activity {
 
                     promptSpeechInput();
 
-                    try {
-                        //InetAddress serverAddr = InetAddress.getByName(SERVER_IP);
-                        //socket = new Socket(serverAddr, SERVERPORT);
-                        PrintWriter out = null;
-                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-                        out.println("c");
-                    } catch (IOException e) {
-                        System.out.println("error2");
+                    System.out.println("Waiting for result and to reconnect");
+                    while(!gotResult){
+
                     }
 
+                    try {
+                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    out.println("c");
                     System.out.println("voice: "+ voice);
 
                     if(voice.equals("go to Landmark one")){
-                        PrintWriter out = null;
-                        try {
-                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        System.out.println("L1 1");
+//                        PrintWriter out = null;
+//                        try {
+//                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
                         System.out.println("out: " + out);
+                        System.out.println("L1 1");
                         out.println("goto1");
                     }else if(voice.equals("go to Landmark 1")){
-                        PrintWriter out = null;
-                        try {
-                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        System.out.println("L1 2");
+//                        PrintWriter out = null;
+//                        try {
+//                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
                         System.out.println("out: " + out);
+                        System.out.println("L1 2");
                         out.println("goto1");
                     }else if(voice.equals("go to Landmark two")){
-                        PrintWriter out = null;
-                        try {
-                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+//                        PrintWriter out = null;
+//                        try {
+//                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
                         System.out.println("out: " + out);
-                        out.println("goto2");
                         System.out.println("L2 1");
+                        out.println("goto2");
                     }else if(voice.equals("go to Landmark 2")){
-                        PrintWriter out = null;
-                        try {
-                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+//                        PrintWriter out = null;
+//                        try {
+//                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+                        System.out.println("out: " + out);
                         System.out.println("L2 2");
                         out.println("goto2");
-                        System.out.println("out: " + out);
                     }else{
                         System.out.println("Error3");
                     }
@@ -401,19 +407,19 @@ public class Client extends Activity {
                     wifiManager.setWifiEnabled(true);
 
                     try {
-                        sleep(10000);
+                        sleep(8000);
                     } catch (InterruptedException e) {
                         System.out.println("error1");
                     }
 
                     new Thread (new ClientThread()).start();
 
-
                 }
                 break;
             }
 
         }
+        gotResult = true;
     }
 
     class ClientThread implements Runnable {
