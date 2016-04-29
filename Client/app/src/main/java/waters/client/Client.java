@@ -192,7 +192,7 @@ public class Client extends Activity {
 //                    }
 //
 //                }};
-
+//
     View.OnClickListener startSafePathListener=
             new View.OnClickListener(){
                 @Override
