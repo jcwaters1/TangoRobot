@@ -43,12 +43,11 @@ public class Client extends Activity {
     private static final int SERVERPORT = 5010;
     private static final String SERVER_IP = "192.168.43.1";
 
-    boolean gotResult = false;
+    static boolean gotResult = false;
 
-    EditText landmarkName;
-    EditText adfName;
-
-
+    EditText input;
+//    EditText adfName;
+//    EditText adfNameLoad;
 
 
     @Override
@@ -80,108 +79,165 @@ public class Client extends Activity {
         Button saveLandmarkButton = (Button) findViewById(R.id.saveLandmarkButton);
         saveLandmarkButton.setOnClickListener(saveLandmarkButtonListener);
 
-        Button goToL1Button = (Button) findViewById(R.id.goToL1Button);
-        goToL1Button.setOnClickListener(goToL1ButtonListener);
+        Button goToLandmark = (Button) findViewById(R.id.goToLandmark);
+        goToLandmark.setOnClickListener(goToLandmarkListener);
 
-        Button goToL2Button = (Button) findViewById(R.id.goToL2Button);
-        goToL2Button.setOnClickListener(goToL2ButtonListener);
+//        Button goToL2Button = (Button) findViewById(R.id.goToL2Button);
+//        goToL2Button.setOnClickListener(goToL2ButtonListener);
 
-        Button btnSpeak = (Button) findViewById(R.id.btnSpeak);
-        btnSpeak.setOnClickListener(btnSpeakListener);
+//        Button btnSpeak = (Button) findViewById(R.id.btnSpeak);
+//        btnSpeak.setOnClickListener(btnSpeakListener);
 
         Button saveADF = (Button) findViewById(R.id.saveADF);
         saveADF.setOnClickListener(saveADFListener);
 
-        landmarkName = (EditText)findViewById(R.id.landmarkText);
-        adfName = (EditText)findViewById(R.id.adfName);
+        Button loadADF = (Button) findViewById(R.id.loadADF);
+        loadADF.setOnClickListener(loadADFListener);
+
+        Button startSafePath = (Button) findViewById(R.id.startSafePath);
+        startSafePath.setOnClickListener(startSafePathListener);
+
+        Button stopSafePath = (Button) findViewById(R.id.stopSafePath);
+        stopSafePath.setOnClickListener(stopSafePathListener);
+
+        input = (EditText)findViewById(R.id.inputData);
+//        adfName = (EditText)findViewById(R.id.adfName);
+//        adfNameLoad = (EditText)findViewById(R.id.adfNameLoad);
 
         new Thread(new ClientThread()).start();
     }
 
-    View.OnClickListener btnSpeakListener =
-            new View.OnClickListener(){
+//    View.OnClickListener btnSpeakListener =
+//            new View.OnClickListener(){
+//
+//                @Override
+//                public void onClick(View v) {
+//                    PrintWriter out = null;
+//
+//                    wifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+//                    //System.out.println("here");
+//
+//                    wifiManager.setWifiEnabled(false);
+//
+//                    promptSpeechInput();
+//
+//                    try {
+//                        sleep(15000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    wifiManager.setWifiEnabled(true);
+//
+//                    new Thread (new ClientThread()).start();
+//
+//                    try {
+//                        Thread.sleep(3000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    try {
+//                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//
+//                    out.println("c");
+//                    System.out.println("voice: "+ voice);
+//
+//                    if(voice.equals("go to Landmark one")){
+////                        PrintWriter out = null;
+////                        try {
+////                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+////                        } catch (IOException e) {
+////                            e.printStackTrace();
+////                        }
+//                        System.out.println("out: " + out);
+//                        System.out.println("L1 1");
+//                        out.println("goto1");
+//                    }else if(voice.equals("go to Landmark 1")){
+////                        PrintWriter out = null;
+////                        try {
+////                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+////                        } catch (IOException e) {
+////                            e.printStackTrace();
+////                        }
+//                        System.out.println("out: " + out);
+//                        System.out.println("L1 2");
+//                        out.println("goto1");
+//                    }else if(voice.equals("go to Landmark two")){
+////                        PrintWriter out = null;
+////                        try {
+////                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+////                        } catch (IOException e) {
+////                            e.printStackTrace();
+////                        }
+//                        System.out.println("out: " + out);
+//                        System.out.println("L2 1");
+//                        out.println("goto2");
+//                    }else if(voice.equals("go to Landmark 2")){
+////                        PrintWriter out = null;
+////                        try {
+////                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+////                        } catch (IOException e) {
+////                            e.printStackTrace();
+////                        }
+//                        System.out.println("out: " + out);
+//                        System.out.println("L2 2");
+//                        out.println("goto2");
+//                    }else{
+//                        System.out.println("Error3");
+//                    }
+//
+//                }};
 
+    View.OnClickListener startSafePathListener=
+            new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
                     PrintWriter out = null;
-
-                    wifiManager = (WifiManager)getSystemService(Context.WIFI_SERVICE);
-                    //System.out.println("here");
-
-                    wifiManager.setWifiEnabled(false);
-                    try {
-                        sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    promptSpeechInput();
-
-                    System.out.println("Waiting for result and to reconnect");
-                    while(!gotResult){
-
-                    }
-
                     try {
                         out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    out.println("startSafePathRecord");
+                }};
 
-                    out.println("c");
-                    System.out.println("voice: "+ voice);
-
-                    if(voice.equals("go to Landmark one")){
-//                        PrintWriter out = null;
-//                        try {
-//                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-                        System.out.println("out: " + out);
-                        System.out.println("L1 1");
-                        out.println("goto1");
-                    }else if(voice.equals("go to Landmark 1")){
-//                        PrintWriter out = null;
-//                        try {
-//                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-                        System.out.println("out: " + out);
-                        System.out.println("L1 2");
-                        out.println("goto1");
-                    }else if(voice.equals("go to Landmark two")){
-//                        PrintWriter out = null;
-//                        try {
-//                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-                        System.out.println("out: " + out);
-                        System.out.println("L2 1");
-                        out.println("goto2");
-                    }else if(voice.equals("go to Landmark 2")){
-//                        PrintWriter out = null;
-//                        try {
-//                            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-                        System.out.println("out: " + out);
-                        System.out.println("L2 2");
-                        out.println("goto2");
-                    }else{
-                        System.out.println("Error3");
+    View.OnClickListener stopSafePathListener=
+            new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    PrintWriter out = null;
+                    try {
+                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+                    out.println("stopSafePathRecord");
+                }};
 
+    View.OnClickListener loadADFListener=
+            new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    String adf = input.getText().toString();
+                    PrintWriter out = null;
+                    try {
+                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    out.println("adfLoad " + adf);
                 }};
 
     View.OnClickListener saveADFListener=
             new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    String adf = adfName.getText().toString();
+                    String adf = input.getText().toString();
                     PrintWriter out = null;
                     try {
                         out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
@@ -191,42 +247,42 @@ public class Client extends Activity {
                     out.println("adfSave " + adf);
                 }};
 
-    View.OnClickListener goToL1ButtonListener =
+    View.OnClickListener goToLandmarkListener =
             new View.OnClickListener(){
 
                 @Override
                 public void onClick(View v) {
-                    String name = landmarkName.getText().toString();
+                    String name = input.getText().toString();
                     PrintWriter out = null;
                     try {
                         out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    out.println("goto1");
+                    out.println("goto " + name);
                 }};
 
-    View.OnClickListener goToL2ButtonListener =
-            new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    String name = landmarkName.getText().toString();
-                    PrintWriter out = null;
-                    try {
-                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    out.println("goto2");
-                }};
+//    View.OnClickListener goToL2ButtonListener =
+//            new View.OnClickListener(){
+//
+//                @Override
+//                public void onClick(View v) {
+//                    String name = input.getText().toString();
+//                    PrintWriter out = null;
+//                    try {
+//                        out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    out.println("goto2");
+//                }};
 
     View.OnClickListener saveLandmarkButtonListener =
             new View.OnClickListener(){
 
                 @Override
                 public void onClick(View v) {
-                    String name = landmarkName.getText().toString();
+                    String name = input.getText().toString();
                     PrintWriter out = null;
                     try {
                         out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
@@ -371,56 +427,47 @@ public class Client extends Activity {
 
     /**
      * Showing google speech input dialog
-     * */
-    private void promptSpeechInput() {
-        //System.out.println("here");
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-
-        try {
-            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
-        } catch (ActivityNotFoundException a) {
-            System.out.println("error");
-        }
-    }
-
-    /**
-     * Receiving speech input
-     * */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-
-        switch (requestCode) {
-            case REQ_CODE_SPEECH_INPUT: {
-                if (resultCode == RESULT_OK && null != data) {
-                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    //txtSpeechInput.setText(result.get(0));
-
-                    //use the result.get(0) to control robot here...
-
-//                    voice = result.get(0);
-                    Client.voice = result.get(0);
-
-                    wifiManager.setWifiEnabled(true);
-
-                    try {
-                        sleep(8000);
-                    } catch (InterruptedException e) {
-                        System.out.println("error1");
-                    }
-
-                    new Thread (new ClientThread()).start();
-
-                }
-                break;
-            }
-
-        }
-        gotResult = true;
-    }
+//     * */
+//    private void promptSpeechInput() {
+//        //System.out.println("here");
+//        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+//        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+//
+//        try {
+//            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+//        } catch (ActivityNotFoundException a) {
+//            System.out.println("error");
+//        }
+//    }
+//
+//    /**
+//     * Receiving speech input
+//     * */
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//
+//        switch (requestCode) {
+//            case REQ_CODE_SPEECH_INPUT: {
+//                if (resultCode == RESULT_OK && null != data) {
+//                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+//                    //txtSpeechInput.setText(result.get(0));
+//
+//                    //use the result.get(0) to control robot here...
+//
+////                    voice = result.get(0);
+//                    Client.voice = result.get(0);
+//
+//
+//                }
+//                break;
+//            }
+//
+//        }
+//        Client.gotResult = true;
+//    }
 
     class ClientThread implements Runnable {
 
